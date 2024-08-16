@@ -51,7 +51,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@tolokoban/tgd": "^2.0.6",
+        "@tolokoban/tgd": "^2.0.7",
         "@tolokoban/type-guards": "^0.6.0",
         "@tolokoban/ui": "^0.19.2",
         "electron-squirrel-startup": "^1.0.1",

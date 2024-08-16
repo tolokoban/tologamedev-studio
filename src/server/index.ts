@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron"
+import { app, BrowserWindow, session } from "electron"
 import {
     preferencesWindowRestore,
     preferencesWindowSave as preferencesWindowSave,
@@ -15,6 +15,28 @@ if (require("electron-squirrel-startup")) {
 }
 
 const createWindow = (): void => {
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+        callback({
+            responseHeaders: {
+                ...details.responseHeaders,
+                "Content-Security-Policy": [
+                    [
+                        "img-src 'self' https: data: blob: vscode-remote-resource:",
+                        "media-src 'self'",
+                        "frame-src 'self'",
+                        "object-src 'self'",
+                        "script-src-elem 'self' 'unsafe-eval' blob:",
+                        "script-src 'self' 'unsafe-eval' blob:",
+                        "style-src 'self' 'unsafe-inline'",
+                        "connect-src 'self' https: ws:",
+                        "font-src 'self' https:",
+                        "default-src 'none'",
+                    ].join("; "),
+                ],
+            },
+        })
+    })
+
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         height: 600,
